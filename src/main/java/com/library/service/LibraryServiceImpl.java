@@ -19,6 +19,17 @@ public class LibraryServiceImpl implements LibraryService {
     @Autowired
     private UserRepository userRepo;
 
+    /**
+     * Processes a book checkout request for a user.
+     * Validates the user and book existence, then updates the book's status.
+     *
+     * @param userId the ID of the user checking out the book
+     * @param bookId the ID of the book to be checked out
+     * @return a success message if the operation is successful
+     * @throws UserNotFoundException if no user is found with the given ID
+     * @throws BookNotFoundException if no book is found with the given ID
+     * @throws AlreadyCheckedOutException if the book is already checked out
+     */
     @Override
     public String checkoutBook(Long userId, Long bookId) {
         User user = userRepo.findById(userId)
@@ -37,6 +48,16 @@ public class LibraryServiceImpl implements LibraryService {
         return "Book checked out successfully!";
     }
 
+    /**
+     * Processes a book return request from a user.
+     * Validates the return request and updates the book's status.
+     *
+     * @param userId the ID of the user returning the book
+     * @param bookId the ID of the book being returned
+     * @return a success message if the operation is successful
+     * @throws BookNotFoundException if no book is found with the given ID
+     * @throws InvalidReturnException if the user is not authorized to return the book
+     */
     @Override
     public String returnBook(Long userId, Long bookId) {
         Book book = bookRepo.findById(bookId)
@@ -53,10 +74,22 @@ public class LibraryServiceImpl implements LibraryService {
         return "Book returned successfully!";
     }
 
+    /**
+     * Saves a user to the database.
+     *
+     * @param user the user object to be saved
+     * @return the saved user entity with generated ID
+     */
     public User saveUser(User user) {
         return userRepo.save(user);
     }
 
+    /**
+     * Saves a book to the database.
+     *
+     * @param book the book object to be saved
+     * @return the saved book entity with generated ID
+     */
     public Book saveBook(Book book) {
         return bookRepo.save(book);
     }
